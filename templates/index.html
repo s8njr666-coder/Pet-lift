@@ -3,36 +3,93 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PetLift</title>
+  <title>PetLift - Community Pet Transport</title>
   <style>
-    body { margin: 0; font-family: system-ui, sans-serif;
-           background: #2ABFB3; color: #0D2E2C; }
-    .wrap { max-width: 420px; margin: 0 auto; padding: 3rem 1.5rem; }
-    .title { font-size: 2rem; font-weight: 900; color: white; margin-bottom: 0.25rem; }
-    .sub { color: rgba(255,255,255,0.75); margin-bottom: 2.5rem; font-size: 1rem; }
-    .btn {
-      display: block; width: 100%; padding: 1rem;
-      margin-bottom: 0.75rem; border-radius: 999px;
-      text-align: center; text-decoration: none;
-      font-size: 1rem; font-weight: 800; border: none; cursor: pointer;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #2ABFB3 0%, #1A8F86 100%);
+      color: #0D2E2C;
+      min-height: 100vh;
     }
-    .orange { background: #FF7940; color: #0D2E2C; }
-    .white { background: white; color: #0D2E2C; border: 2px solid white; }
-    .note { text-align: center; color: rgba(255,255,255,0.5);
-            font-size: 0.8rem; margin-top: 1.5rem; }
+    .wrap { max-width: 420px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: white;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .sub {
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 2.5rem;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+    .btn {
+      display: block; width: 100%; padding: 1.2rem;
+      margin-bottom: 1rem; border-radius: 16px;
+      text-align: center; text-decoration: none;
+      font-size: 1.05rem; font-weight: 700; border: none; cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .btn:active { transform: translateY(0); }
+    .orange { background: #FF7940; color: white; }
+    .white { background: white; color: #0D2E2C; }
+    .teal { background: #1A8F86; color: white; }
+    .note {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      margin-top: 2rem;
+      line-height: 1.5;
+    }
+    .user-info {
+      background: rgba(255,255,255,0.15);
+      padding: 1rem;
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="title">🐾 PetLift</div>
-    <div class="sub">Community rides for rescue pets in Phoenix.</div>
-    <a class="btn orange" href="/rescuer">I Need a Ride<br>
-      <span style="font-weight:500;font-size:0.85rem">Rescuer / Colony Manager</span>
-    </a>
-    <a class="btn white" href="/driver">I Can Drive<br>
-      <span style="font-weight:500;font-size:0.85rem">Volunteer</span>
-    </a>
-    <p class="note">Volunteer drivers only · No passenger rides</p>
+    <div class="sub">Community rides for rescue pets in Phoenix</div>
+
+    {% if user %}
+      <div class="user-info">
+        Welcome back, {{ user.full_name }}!
+      </div>
+
+      {% if user.role in ['rescuer', 'both'] %}
+        <a class="btn orange" href="/rescuer">Rescuer Dashboard</a>
+      {% endif %}
+
+      {% if user.role in ['driver', 'both'] %}
+        <a class="btn white" href="/driver">Driver Dashboard</a>
+      {% endif %}
+
+      <a class="btn teal" href="/logout">Logout</a>
+    {% else %}
+      <a class="btn orange" href="/login">I Need a Ride<br>
+        <span style="font-weight:500;font-size:0.9rem">Rescuer / Colony Manager</span>
+      </a>
+      <a class="btn white" href="/login">I Can Drive<br>
+        <span style="font-weight:500;font-size:0.9rem">Volunteer Driver</span>
+      </a>
+      <a class="btn teal" href="/register">Create Account</a>
+    {% endif %}
+
+    <p class="note">
+      Volunteer drivers only · No passenger rides<br>
+      Coordinating safe transport for Phoenix rescue animals
+    </p>
   </div>
 </body>
 </html>

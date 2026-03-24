@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - PetLift</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #2ABFB3 0%, #1A8F86 100%);
+      color: #0D2E2C;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 420px; margin: 0 auto; }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #0D2E2C;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      color: #6B8F8D;
+      font-size: 0.95rem;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0D2E2C;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 12px;
+      border: 2px solid #E6F8F7;
+      font-size: 1rem;
+      background: #F9FBFB;
+      transition: border-color 0.2s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #2ABFB3;
+    }
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #FF7940;
+      color: white;
+      box-shadow: 0 4px 12px rgba(255,121,64,0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255,121,64,0.4);
+    }
+    .flash {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .flash-error {
+      background: #FFE5E5;
+      color: #C41E3A;
+      border-left: 4px solid #C41E3A;
+    }
+    .flash-success {
+      background: #E6F8F7;
+      color: #1A8F86;
+      border-left: 4px solid #1A8F86;
+    }
+    .flash-warning {
+      background: #FFF0E9;
+      color: #FF7940;
+      border-left: 4px solid #FF7940;
+    }
+    .link {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #6B8F8D;
+      font-size: 0.9rem;
+    }
+    .link a {
+      color: #2ABFB3;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .link a:hover {
+      text-decoration: underline;
+    }
+    .back {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .back a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    .back a:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back">
+      <a href="/">← Back to Home</a>
+    </div>
+
+    <div class="card">
+      <div class="header">
+        <div class="title">🐾 Welcome Back</div>
+        <div class="subtitle">Log in to your PetLift account</div>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="post">
+        <label>Email</label>
+        <input type="email" name="email" required autofocus>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <button type="submit" class="btn btn-primary">Log In</button>
+      </form>
+
+      <div class="link">
+        Don't have an account? <a href="/register">Sign up</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

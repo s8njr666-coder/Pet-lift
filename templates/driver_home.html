@@ -3,103 +3,268 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PetLift – Driver</title>
+  <title>Driver Dashboard - PetLift</title>
   <style>
-    body { margin: 0; font-family: system-ui, sans-serif;
-           background: #F9FBFB; color: #0D2E2C; }
-    .wrap { max-width: 480px; margin: 0 auto; padding: 1.5rem; }
-    .header { background: #2ABFB3; padding: 1rem 1.5rem;
-              color: white; font-size: 1.2rem; font-weight: 900; }
-    .card { background: white; border-radius: 16px; padding: 1rem;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
-    .live-card { border: 2px solid #FF7940;
-                 box-shadow: 0 4px 20px rgba(255,121,64,0.15); }
-    .btn { display: inline-block; border: none; border-radius: 999px;
-           padding: 0.6rem 1.2rem; font-size: 0.95rem;
-           font-weight: 800; cursor: pointer; }
-    .orange { background: #FF7940; color: #0D2E2C; }
-    .teal { background: #2ABFB3; color: white; }
-    .full { width: 100%; display: block; padding: 0.9rem;
-            text-align: center; margin-top: 0.75rem;
-            box-sizing: border-box; }
-    .muted { color: #6B8F8D; font-size: 0.85rem; }
-    .badge { display: inline-block; background: #E6F8F7;
-             color: #1A8F86; border-radius: 999px;
-             padding: 2px 10px; font-size: 0.75rem;
-             font-weight: 800; margin-top: 4px; }
-    .live-badge { background: #FFF0E9; color: #FF7940; }
-    select { padding: 0.5rem; border-radius: 10px;
-             border: 1.5px solid #E6F8F7; font-size: 0.9rem;
-             background: #F9FBFB; margin-right: 8px; }
-    .back { color: white; text-decoration: none;
-            margin-right: 12px; font-size: 1.2rem; }
-    .thank-you { text-align: center; color: #6B8F8D;
-                 font-size: 0.85rem; margin-bottom: 1.5rem; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #F9FBFB;
+      color: #0D2E2C;
+    }
+    .header {
+      background: linear-gradient(135deg, #2ABFB3 0%, #1A8F86 100%);
+      padding: 1.2rem 1.5rem;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 900;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .back {
+      color: white;
+      text-decoration: none;
+      margin-right: 12px;
+      font-size: 1.3rem;
+      opacity: 0.9;
+    }
+    .back:hover { opacity: 1; }
+    .wrap { max-width: 600px; margin: 0 auto; padding: 1.5rem; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: all 0.2s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .live-card {
+      border: 3px solid #FF7940;
+      box-shadow: 0 4px 24px rgba(255,121,64,0.2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 4px 24px rgba(255,121,64,0.2); }
+      50% { box-shadow: 0 6px 32px rgba(255,121,64,0.35); }
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 1rem 0;
+      color: #0D2E2C;
+    }
+    .btn {
+      display: inline-block;
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .orange {
+      background: #FF7940;
+      color: white;
+      box-shadow: 0 2px 8px rgba(255,121,64,0.3);
+    }
+    .orange:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(255,121,64,0.4);
+    }
+    .teal {
+      background: #2ABFB3;
+      color: white;
+      box-shadow: 0 2px 8px rgba(42,191,179,0.3);
+    }
+    .teal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(42,191,179,0.4);
+    }
+    .full {
+      width: 100%;
+      padding: 0.9rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .muted {
+      color: #6B8F8D;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 0.5rem;
+    }
+    .live-badge {
+      background: #FF7940;
+      color: white;
+      animation: glow 2s infinite;
+    }
+    @keyframes glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    .status-badge {
+      background: #E6F8F7;
+      color: #1A8F86;
+    }
+    select {
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      border: 2px solid #E6F8F7;
+      font-size: 0.9rem;
+      background: #F9FBFB;
+      margin-right: 0.5rem;
+      margin-top: 0.75rem;
+      transition: border-color 0.2s;
+    }
+    select:focus {
+      outline: none;
+      border-color: #2ABFB3;
+    }
+    .thank-you {
+      text-align: center;
+      color: #6B8F8D;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+    }
+    .contact-info {
+      background: #F9FBFB;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+    }
+    .flash {
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .flash-error {
+      background: #FFE5E5;
+      color: #C41E3A;
+      border-left: 4px solid #C41E3A;
+    }
+    .flash-success {
+      background: #E6F8F7;
+      color: #1A8F86;
+      border-left: 4px solid #1A8F86;
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <a class="back" href="/">←</a>🚗 Driver Home
+    <a class="back" href="/">←</a>🚗 Driver Dashboard
   </div>
   <div class="wrap">
-    <p class="thank-you">
-      Thank you for helping our community cats get to the clinic safely. 🐾
-    </p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="thank-you">
+      Thank you for helping rescue animals get to their appointments safely!
+    </div>
 
     {% if active_trips %}
-      <h3>🔴 Live Trip</h3>
+      <h3>🔴 Your Active Trips</h3>
       {% for trip in active_trips %}
         <div class="card live-card">
-          <span class="badge live-badge">LIVE TRIP</span><br><br>
-          <strong>🐱 {{ trip['crate_count'] }} crates</strong>
-          — {{ trip['reason'] or 'Clinic visit' }}<br>
-          <span class="muted">Pickup: {{ trip['pickup_loc'] }}</span><br>
-          <span class="muted">
-            Destination: {{ trip['dropoff_clinic'] }}
-          </span><br><br>
-          <span class="muted">Status: </span>
-          <strong>{{ trip['status'] }}</strong><br>
-
-          {% if trip['status'] != 'done' %}
-            <form method="post"
-                  action="/trip/{{ trip['trip_id'] }}/status">
-              <select name="status">
-                <option value="scheduled">Scheduled</option>
-                <option value="in_transit">In Transit</option>
-                <option value="at_clinic">At Clinic</option>
-                <option value="done">Done</option>
-              </select>
-              <button type="submit" class="btn orange">
-                Update
-              </button>
-            </form>
-          {% endif %}
+          <span class="badge live-badge">ACTIVE TRIP</span>
+          <div style="margin-top: 1rem;">
+            <strong style="font-size: 1.1rem;">🐱 {{ trip['transport_requests']['crate_count'] }} crate{{ 's' if trip['transport_requests']['crate_count'] != 1 else '' }}</strong>
+            <div style="color: #0D2E2C; margin: 0.5rem 0;">{{ trip['transport_requests']['reason'] }}</div>
+            <div class="muted">
+              <strong>From:</strong> {{ trip['transport_requests']['pickup_location'] }}<br>
+              <strong>To:</strong> {{ trip['transport_requests']['dropoff_clinic'] }}
+            </div>
+            {% if trip['transport_requests'].get('special_instructions') %}
+              <div class="muted" style="margin-top: 0.5rem;">
+                <strong>Instructions:</strong> {{ trip['transport_requests']['special_instructions'] }}
+              </div>
+            {% endif %}
+            {% if trip['transport_requests']['profiles'] %}
+              <div class="contact-info">
+                <strong>Rescuer:</strong> {{ trip['transport_requests']['profiles']['full_name'] }}<br>
+                {% if trip['transport_requests']['profiles'].get('phone') %}
+                  <strong>Phone:</strong> {{ trip['transport_requests']['profiles']['phone'] }}
+                {% endif %}
+              </div>
+            {% endif %}
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #E6F8F7;">
+              <span class="muted"><strong>Current Status:</strong></span><br>
+              <form method="post" action="/trip/{{ trip['id'] }}/status" style="margin-top: 0.5rem;">
+                <select name="status">
+                  <option value="scheduled" {% if trip['status'] == 'scheduled' %}selected{% endif %}>Scheduled</option>
+                  <option value="picked_up" {% if trip['status'] == 'picked_up' %}selected{% endif %}>Picked Up</option>
+                  <option value="in_transit" {% if trip['status'] == 'in_transit' %}selected{% endif %}>In Transit</option>
+                  <option value="at_clinic" {% if trip['status'] == 'at_clinic' %}selected{% endif %}>At Clinic</option>
+                  <option value="completed" {% if trip['status'] == 'completed' %}selected{% endif %}>Completed</option>
+                </select>
+                <button type="submit" class="btn orange">
+                  Update Status
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       {% endfor %}
     {% endif %}
 
-    <h3>Available Requests</h3>
+    <h3>Available Transport Requests</h3>
     {% for r in open_requests %}
       <div class="card">
-        <strong>🐱 {{ r['crate_count'] }} crates</strong>
-        — {{ r['reason'] or 'Clinic visit' }}<br>
-        <span class="muted">Pickup: {{ r['pickup_loc'] }}</span><br>
-        <span class="muted">
-          Destination: {{ r['dropoff_clinic'] }}
-        </span><br>
-        <span class="badge">Fits your vehicle</span>
-        <form method="post"
-              action="/driver/claim/{{ r['request_id'] }}">
+        <strong style="font-size: 1.05rem;">🐱 {{ r['crate_count'] }} crate{{ 's' if r['crate_count'] != 1 else '' }}</strong>
+        <div style="color: #0D2E2C; margin: 0.5rem 0;">{{ r['reason'] }}</div>
+        <div class="muted">
+          <strong>From:</strong> {{ r['pickup_location'] }}<br>
+          <strong>To:</strong> {{ r['dropoff_clinic'] }}
+        </div>
+        {% if r.get('special_instructions') %}
+          <div class="muted" style="margin-top: 0.5rem;">
+            <strong>Instructions:</strong> {{ r['special_instructions'] }}
+          </div>
+        {% endif %}
+        {% if r['profiles'] %}
+          <div class="contact-info">
+            <strong>Rescuer:</strong> {{ r['profiles']['full_name'] }}<br>
+            {% if r['profiles'].get('phone') %}
+              <strong>Phone:</strong> {{ r['profiles']['phone'] }}
+            {% endif %}
+          </div>
+        {% endif %}
+        <form method="post" action="/driver/claim/{{ r['id'] }}">
           <button type="submit" class="btn teal full">
-            Claim Trip
+            Claim This Trip
           </button>
         </form>
       </div>
     {% else %}
-      <p class="muted">No open requests right now. Check back soon!</p>
+      <div class="card">
+        <p class="muted" style="text-align: center; margin: 1rem 0;">
+          No open requests right now. Check back soon or refresh the page.
+        </p>
+      </div>
     {% endfor %}
-
   </div>
 </body>
 </html>

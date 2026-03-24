@@ -3,73 +3,203 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PetLift – Rescuer</title>
+  <title>Rescuer Dashboard - PetLift</title>
   <style>
-    body { margin: 0; font-family: system-ui, sans-serif;
-           background: #F9FBFB; color: #0D2E2C; }
-    .wrap { max-width: 480px; margin: 0 auto; padding: 1.5rem; }
-    .header { background: #2ABFB3; padding: 1rem 1.5rem;
-              color: white; font-size: 1.2rem; font-weight: 900; }
-    .card { background: white; border-radius: 16px; padding: 1rem;
-            margin-bottom: 0.75rem;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
-    .btn { display: inline-block; border: none; border-radius: 999px;
-           padding: 0.6rem 1.2rem; font-size: 0.95rem;
-           font-weight: 800; cursor: pointer; }
-    .orange { background: #FF7940; color: #0D2E2C; }
-    .teal { background: #2ABFB3; color: white; }
-    .full { width: 100%; display: block; padding: 0.9rem;
-            text-align: center; margin-top: 0.5rem; }
-    label { display: block; font-size: 0.8rem; font-weight: 700;
-            color: #6B8F8D; text-transform: uppercase;
-            letter-spacing: 0.05em; margin-bottom: 4px; margin-top: 12px; }
-    input, select { width: 100%; padding: 0.6rem 0.8rem;
-                    border-radius: 10px; border: 1.5px solid #E6F8F7;
-                    font-size: 0.95rem; background: #F9FBFB;
-                    box-sizing: border-box; }
-    .muted { color: #6B8F8D; font-size: 0.85rem; }
-    .status-open { color: #2ABFB3; font-weight: 700; }
-    .status-claimed { color: #FF7940; font-weight: 700; }
-    .status-done { color: #6B8F8D; font-weight: 700; }
-    .back { color: white; text-decoration: none; margin-right: 12px; font-size: 1.2rem; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #F9FBFB;
+      color: #0D2E2C;
+    }
+    .header {
+      background: linear-gradient(135deg, #2ABFB3 0%, #1A8F86 100%);
+      padding: 1.2rem 1.5rem;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: 900;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .back {
+      color: white;
+      text-decoration: none;
+      margin-right: 12px;
+      font-size: 1.3rem;
+      opacity: 0.9;
+    }
+    .back:hover { opacity: 1; }
+    .wrap { max-width: 600px; margin: 0 auto; padding: 1.5rem; }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 1rem 0;
+      color: #0D2E2C;
+    }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #0D2E2C;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 2px solid #E6F8F7;
+      font-size: 0.95rem;
+      background: #F9FBFB;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #2ABFB3;
+    }
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .btn {
+      display: inline-block;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .orange {
+      background: #FF7940;
+      color: white;
+      box-shadow: 0 4px 12px rgba(255,121,64,0.3);
+    }
+    .orange:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255,121,64,0.4);
+    }
+    .full {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .muted {
+      color: #6B8F8D;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 0.5rem;
+    }
+    .status-open {
+      background: #E6F8F7;
+      color: #1A8F86;
+    }
+    .status-claimed {
+      background: #FFF0E9;
+      color: #FF7940;
+    }
+    .status-completed {
+      background: #E8EDF0;
+      color: #6B8F8D;
+    }
+    .request-item {
+      border-left: 4px solid #2ABFB3;
+      padding-left: 1rem;
+      margin-bottom: 1rem;
+    }
+    .request-item:last-child {
+      margin-bottom: 0;
+    }
+    .flash {
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .flash-error {
+      background: #FFE5E5;
+      color: #C41E3A;
+      border-left: 4px solid #C41E3A;
+    }
+    .flash-success {
+      background: #E6F8F7;
+      color: #1A8F86;
+      border-left: 4px solid #1A8F86;
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <a class="back" href="/">←</a>🐱 Rescuer Home
+    <a class="back" href="/">←</a>🐱 Rescuer Dashboard
   </div>
   <div class="wrap">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
     <h3>Post a New Ride Request</h3>
     <div class="card">
       <form method="post" action="/rescuer">
-        <label>Pickup Neighborhood</label>
+        <label>Pickup Location*</label>
         <input type="text" name="pickup_loc"
-               placeholder="e.g. Ahwatukee" required>
+               placeholder="e.g. Ahwatukee, near Desert Foothills Park" required>
 
-        <label>Destination Clinic</label>
-        <select name="dropoff_clinic">
+        <label>Destination Clinic*</label>
+        <select name="dropoff_clinic" required>
           <option>Altered Tails</option>
           <option>Fix.Adopt.Save Clinic</option>
           <option>Humane Animal Rescue</option>
-          <option>SNAP Spay &amp; Neuter</option>
+          <option>SNAP Spay & Neuter</option>
+          <option>Arizona Humane Society</option>
         </select>
 
-        <label>Number of Crates</label>
+        <label>Number of Crates* (1-20)</label>
         <input type="number" name="crate_count"
-               min="1" max="10" value="1">
+               min="1" max="20" value="1" required>
 
-        <label>Reason</label>
-        <select name="reason">
+        <label>Reason*</label>
+        <select name="reason" required>
           <option>Spay Day</option>
           <option>Vaccines</option>
           <option>Emergency</option>
           <option>Foster Transfer</option>
           <option>Adoption Event</option>
+          <option>Medical Check-up</option>
         </select>
 
-        <p class="muted" style="margin-top:12px">
-          Drivers are volunteers — times may vary. Thank you! 🐾
+        <label>Special Instructions (optional)</label>
+        <textarea name="special_instructions"
+                  placeholder="Any special handling notes, timing preferences, etc."></textarea>
+
+        <p class="muted" style="margin-top:0.75rem">
+          Volunteer drivers will be notified. Please allow time for someone to claim your request.
         </p>
 
         <button type="submit" class="btn orange full">
@@ -78,21 +208,42 @@
       </form>
     </div>
 
-    <h3>My Requests</h3>
+    <h3>My Transport Requests</h3>
     {% for r in requests %}
       <div class="card">
-        <strong>🐱 {{ r['crate_count'] }} crates</strong>
-        — {{ r['reason'] or 'Clinic visit' }}<br>
-        <span class="muted">Pickup: {{ r['pickup_loc'] }}</span><br>
-        <span class="muted">Destination: {{ r['dropoff_clinic'] }}</span><br>
-        <span class="status-{{ r['status'] }}">
-          Status: {{ r['status'] }}
-        </span>
+        <div class="request-item">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+            <strong style="font-size: 1.05rem;">🐱 {{ r['crate_count'] }} crate{{ 's' if r['crate_count'] != 1 else '' }}</strong>
+            <span class="status-badge status-{{ r['status'] }}">
+              {{ r['status'] }}
+            </span>
+          </div>
+          <div style="color: #0D2E2C; margin-bottom: 0.25rem;">{{ r['reason'] }}</div>
+          <div class="muted">
+            <strong>From:</strong> {{ r['pickup_location'] }}<br>
+            <strong>To:</strong> {{ r['dropoff_clinic'] }}
+          </div>
+          {% if r.get('special_instructions') %}
+            <div class="muted" style="margin-top: 0.5rem;">
+              <strong>Notes:</strong> {{ r['special_instructions'] }}
+            </div>
+          {% endif %}
+          {% if r.get('trips') and r['trips']|length > 0 %}
+            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #E6F8F7;">
+              <span class="muted">
+                <strong>Driver status:</strong> {{ r['trips'][0]['status'] }}
+              </span>
+            </div>
+          {% endif %}
+        </div>
       </div>
     {% else %}
-      <p class="muted">No requests yet. Post one above!</p>
+      <div class="card">
+        <p class="muted" style="text-align: center; margin: 1rem 0;">
+          No requests yet. Create your first transport request above.
+        </p>
+      </div>
     {% endfor %}
-
   </div>
 </body>
 </html>
