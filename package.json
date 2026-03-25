@@ -1,0 +1,20 @@
+{
+  "name": "petlift",
+  "version": "1.0.0",
+  "description": "Community transport coordination platform for rescue animals",
+  "main": "app.py",
+  "scripts": {
+    "start": "python app.py",
+    "build": "echo 'Python app - no build step needed'"
+  },
+  "keywords": [
+    "petlift",
+    "rescue",
+    "transport"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": "18.x"
+  }
+}
